@@ -46,11 +46,13 @@ export default class Cursor {
     onScaleMouse() {
         this.Item.forEach((link) => {
             if (link.matches(":hover")) {
+                this.setvideo(link);
                 this.scaleAnimation(this.Cursor.children[0], 0.8);
             }
 
             link.addEventListener("mouseenter", () => {
                 // Gsap animation for scaling media
+                this.setvideo(link);
                 this.scaleAnimation(this.Cursor.children[0], 0.8);
             });
             //Scale down media on hover off
@@ -81,7 +83,16 @@ export default class Cursor {
     setvideo(el) {
         // Grab the data-video-src and ensure it matches the video that would be displayed
         let src = el.getAttribute("data-video-src");
-        let video = document
+        let video = document.querySelector('#${src}');
+        let siblings = getSiblings(video);
+
+        if (video.id == src) {
+            gsap.set(video, { zIndex: 4, opacity: 1});
+            siblings.forEach((i) => {
+                gsap.set(i, { zIndex: 1, opacity: 0 });
+            });
+        }
+
     }
 
     render(){

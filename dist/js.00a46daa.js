@@ -5674,11 +5674,15 @@ var Cursor = /*#__PURE__*/function () {
 
       this.Item.forEach(function (link) {
         if (link.matches(":hover")) {
+          _this2.setvideo(link);
+
           _this2.scaleAnimation(_this2.Cursor.children[0], 0.8);
         }
 
         link.addEventListener("mouseenter", function () {
           // Gsap animation for scaling media
+          _this2.setvideo(link);
+
           _this2.scaleAnimation(_this2.Cursor.children[0], 0.8);
         }); //Scale down media on hover off
 
@@ -5711,7 +5715,22 @@ var Cursor = /*#__PURE__*/function () {
     value: function setvideo(el) {
       // Grab the data-video-src and ensure it matches the video that would be displayed
       var src = el.getAttribute("data-video-src");
-      var video = document;
+      var video = document.querySelector('#${src}');
+      var siblings = (0, _utils.getSiblings)(video);
+
+      if (video.id == src) {
+        _gsap.gsap.set(video, {
+          zIndex: 4,
+          opacity: 1
+        });
+
+        siblings.forEach(function (i) {
+          _gsap.gsap.set(i, {
+            zIndex: 1,
+            opacity: 0
+          });
+        });
+      }
     }
   }, {
     key: "render",
