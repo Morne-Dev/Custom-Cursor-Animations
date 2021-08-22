@@ -5626,6 +5626,8 @@ var Cursor = /*#__PURE__*/function () {
     this.Cursor = el;
     this.Cursor.style.opacity = 0;
     this.Item = document.querySelectorAll(".hero-inner-link-item");
+    this.Hero = document.querySelector(".hero-inner");
+    this.bounds = this.Cursor.getBoundingClientRect();
     this.CursorConfigs = {
       x: {
         previous: 0,
@@ -5647,7 +5649,10 @@ var Cursor = /*#__PURE__*/function () {
         duration: 1,
         ease: "Power3.easeOut",
         opacity: 1
-      }); // The window.requestAnimationFrame() method tells the browser that you wish to perform an animation and requests that the browser calls a specified function to update an animation before the next repaint. The method takes a callback as an argument to be invoked before the repaint.
+      }); //Execute Scale
+
+
+      _this.onScaleMouse(); // The window.requestAnimationFrame() method tells the browser that you wish to perform an animation and requests that the browser calls a specified function to update an animation before the next repaint. The method takes a callback as an argument to be invoked before the repaint.
 
 
       requestAnimationFrame(function () {
@@ -5659,12 +5664,59 @@ var Cursor = /*#__PURE__*/function () {
 
 
     window.addEventListener("mousemove", this.onMouseMoveEV);
-  }
+  } //Scale the media of the mosue 
+
 
   _createClass(Cursor, [{
+    key: "onScaleMouse",
+    value: function onScaleMouse() {
+      var _this2 = this;
+
+      this.Item.forEach(function (link) {
+        if (link.matches(":hover")) {
+          _this2.scaleAnimation(_this2.Cursor.children[0], 0.8);
+        }
+
+        link.addEventListener("mouseenter", function () {
+          // Gsap animation for scaling media
+          _this2.scaleAnimation(_this2.Cursor.children[0], 0.8);
+        }); //Scale down media on hover off
+
+        link.addEventListener("mouseleave", function () {
+          _this2.scaleAnimation(_this2.Cursor.children[0], 0);
+        }); //Hover on a tag to expand to 1.2
+
+        link.children[1].addEventListener("mouseenter", function () {
+          _this2.scaleAnimation(_this2.Cursor.children[0], 1.2);
+        }); //Off Hover scale to .8
+
+        link.children[1].addEventListener("mouseleave", function () {
+          _this2.scaleAnimation(_this2.Cursor.children[0], 0.8);
+        });
+      });
+    } //Scale Animation
+
+  }, {
+    key: "scaleAnimation",
+    value: function scaleAnimation(el, amt) {
+      _gsap.gsap.to(el, {
+        duration: 0.6,
+        scale: amt,
+        ease: "Power3.easeOut"
+      });
+    } //set video
+
+  }, {
+    key: "setvideo",
+    value: function setvideo(el) {
+      // Grab the data-video-src and ensure it matches the video that would be displayed
+      var src = el.getAttribute("data-video-src");
+      var video = document;
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.CursorConfigs.x.current = mouse.x;
       this.CursorConfigs.y.current = mouse.y; // lerp
@@ -5674,10 +5726,10 @@ var Cursor = /*#__PURE__*/function () {
       } // Setting the cursor x and y to our cursoer html element
 
 
-      this.Cursor.style.transform = "translateX(".concat(this.cursorConfigs.x.previous, "px) translateY(").concat(this.cursorConfigs.y.previous, "px)"); // RAF
+      this.Cursor.style.transform = "translateX(".concat(this.cursorConfigs.x.previous, "px)\n        translateY(").concat(this.cursorConfigs.y.previous, "px)"); // RAF
 
       requestAnimationFrame(function () {
-        return _this2.render();
+        return _this3.render();
       });
     }
   }]);
@@ -5691,12 +5743,14 @@ exports.default = Cursor;
 
 var _cursor = _interopRequireDefault(require("./cursor"));
 
+var _gsap = require("gsap");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 window.onload = function () {
   var cursor = new _cursor.default(document.querySelector(".cursor"));
 };
-},{"./cursor":"js/cursor.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./cursor":"js/cursor.js","gsap":"node_modules/gsap/index.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -5724,7 +5778,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59876" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65358" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

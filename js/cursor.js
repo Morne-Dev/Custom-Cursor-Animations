@@ -3,14 +3,16 @@ import { listeners, getMousePos, getSiblings } from "./utils";
 
 // Grab the mouse position and set it to mouse state
 let mouse = { x: 0, y: 0 };
-window.addEventListener("mousemove",(ev) => (mouse = getMousePos(ev)));
+window.addEventListener("mousemove", (ev) => (mouse = getMousePos(ev)));
 
 export default class Cursor {
-    constructor(el){
+    constructor(el) {
         // Varibles
         this.Cursor = el;
         this.Cursor.style.opacity = 0;
         this.Item = document.querySelectorAll(".hero-inner-link-item");
+        this.Hero = document.querySelector(".hero-inner");
+        this.bounds = this.Cursor.getBoundingClientRect();
         this.CursorConfigs = {
             x: { previous:0, current: 0, amt: 0.2 },
             y: { previous:0, current: 0, amt: 0.2 },
@@ -26,6 +28,9 @@ export default class Cursor {
                 opacity: 1,
             });
 
+            //Execute Scale
+            this.onScaleMouse();
+
             // The window.requestAnimationFrame() method tells the browser that you wish to perform an animation and requests that the browser calls a specified function to update an animation before the next repaint. The method takes a callback as an argument to be invoked before the repaint.
             requestAnimationFrame(() => this.render());
             //Clean up function
@@ -36,6 +41,49 @@ export default class Cursor {
         window.addEventListener("mousemove", this.onMouseMoveEV);
 
     }
+
+    //Scale the media of the mosue 
+    onScaleMouse() {
+        this.Item.forEach((link) => {
+            if (link.matches(":hover")) {
+                this.scaleAnimation(this.Cursor.children[0], 0.8);
+            }
+
+            link.addEventListener("mouseenter", () => {
+                // Gsap animation for scaling media
+                this.scaleAnimation(this.Cursor.children[0], 0.8);
+            });
+            //Scale down media on hover off
+            link.addEventListener("mouseleave", () => {
+                this.scaleAnimation(this.Cursor.children[0], 0);
+            });
+            //Hover on a tag to expand to 1.2
+            link.children[1].addEventListener("mouseenter", () => {
+                this.scaleAnimation(this.Cursor.children[0], 1.2);
+            });
+            //Off Hover scale to .8
+            link.children[1].addEventListener("mouseleave", () => {
+                this.scaleAnimation(this.Cursor.children[0], 0.8);
+            });
+        });
+    }
+
+    //Scale Animation
+    scaleAnimation(el, amt) {
+        gsap.to(el, {
+            duration: 0.6,
+            scale: amt,
+            ease: "Power3.easeOut",
+        });
+    }
+
+    //set video
+    setvideo(el) {
+        // Grab the data-video-src and ensure it matches the video that would be displayed
+        let src = el.getAttribute("data-video-src");
+        let video = document
+    }
+
     render(){
         this.CursorConfigs.x.current = mouse.x;
         this.CursorConfigs.y.current = mouse.y;
@@ -49,7 +97,8 @@ export default class Cursor {
             );
         }
         // Setting the cursor x and y to our cursoer html element
-    this.Cursor.style.transform = `translateX(${this.cursorConfigs.x.previous}px) translateY(${this.cursorConfigs.y.previous}px)`;
+        this.Cursor.style.transform = `translateX(${this.cursorConfigs.x.previous}px)
+        translateY(${this.cursorConfigs.y.previous}px)`;
     // RAF
     requestAnimationFrame(() => this.render());
     }
