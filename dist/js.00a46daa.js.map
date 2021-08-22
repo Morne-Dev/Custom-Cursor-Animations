@@ -1,0 +1,1 @@
+{"version":3,"sources":["js/index.js"],"names":["window","onload","console","log"],"mappings":"AAAAA,MAAM,CAACC,MAAP,GAAgB,YAAM;AACpBC,EAAAA,OAAO,CAACC,GAAR,CAAY,oBAAZ;AACD,CAFD","file":"js.00a46daa.js","sourceRoot":"..","sourcesContent":["window.onload = () => {\n  console.log(\"hey there cutie ;)\");\n};\n"]}
