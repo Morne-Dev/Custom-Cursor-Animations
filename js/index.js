@@ -4,7 +4,7 @@ import { gsap } from "gsap";
 const body = document.querySelector("body");
 
 window.onload = () => {
-  body.classList.remove("loading")
+  body.classList.remove("loading");
   gsap.from(body, {
     opacity: 0,
     duration: 1,

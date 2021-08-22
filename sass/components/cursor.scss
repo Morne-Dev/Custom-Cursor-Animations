@@ -3,9 +3,8 @@
   top: 0px;
   left: 0px;
   z-index: 10;
-  contain: Layout style size;
+  contain: layout style size;
   pointer-events: none;
-
   &.media-blend {
     z-index: 100;
     mix-blend-mode: exclusion;

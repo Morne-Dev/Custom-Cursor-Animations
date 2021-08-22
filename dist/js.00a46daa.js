@@ -5628,7 +5628,7 @@ var Cursor = /*#__PURE__*/function () {
     this.Item = document.querySelectorAll(".hero-inner-link-item");
     this.Hero = document.querySelector(".hero-inner");
     this.bounds = this.Cursor.getBoundingClientRect();
-    this.CursorConfigs = {
+    this.cursorConfigs = {
       x: {
         previous: 0,
         current: 0,
@@ -5639,17 +5639,17 @@ var Cursor = /*#__PURE__*/function () {
         current: 0,
         amt: 0.2
       }
-    }; // Define mouse move function
+    };
 
     this.onMouseMoveEv = function () {
-      _this.CursorConfigs.x.previous = _this.CursorConfigs.x.current = mouse.x;
-      _this.CursorConfigs.y.previous = _this.CursorConfigs.y.current = mouse.y; // Set cursor opacity to 1 when hovered on screen
+      _this.cursorConfigs.x.previous = _this.cursorConfigs.x.current = mouse.x;
+      _this.cursorConfigs.y.previous = _this.cursorConfigs.y.previous = mouse.y; // Set cursor opacity to 1 when hovered on screen
 
       _gsap.gsap.to(_this.Cursor, {
         duration: 1,
         ease: "Power3.easeOut",
         opacity: 1
-      }); //Execute Scale
+      }); // Execute scale function
 
 
       _this.onScaleMouse(); // The window.requestAnimationFrame() method tells the browser that you wish to perform an animation and requests that the browser calls a specified function to update an animation before the next repaint. The method takes a callback as an argument to be invoked before the repaint.
@@ -5657,69 +5657,59 @@ var Cursor = /*#__PURE__*/function () {
 
       requestAnimationFrame(function () {
         return _this.render();
-      }); //Clean up function
+      }); // Clean up function
 
       window.removeEventListener("mousemove", _this.onMouseMoveEv);
-    }; //assign the mouse function
+    }; // Scale cursor animation
 
 
-    window.addEventListener("mousemove", this.onMouseMoveEV);
-  } //Scale the media of the mosue 
-
+    window.addEventListener("mousemove", this.onMouseMoveEv);
+  }
 
   _createClass(Cursor, [{
     key: "onScaleMouse",
     value: function onScaleMouse() {
       var _this2 = this;
 
+      // Loop through all items
       this.Item.forEach(function (link) {
+        // If I am hovering on the item for on page load I want to scale the cursor media
         if (link.matches(":hover")) {
-          _this2.setvideo(link);
+          _this2.setVideo(link);
 
-          _this2.scaleAnimation(_this2.Cursor.children[0], 0.8);
-        }
+          _this2.ScaleCursor(_this2.Cursor.children[0], 0.8);
+        } //On mouse enter scale the media-cursor to .8
+
 
         link.addEventListener("mouseenter", function () {
-          // Gsap animation for scaling media
-          _this2.setvideo(link);
+          _this2.setVideo(link);
 
-          _this2.scaleAnimation(_this2.Cursor.children[0], 0.8);
-        }); //Scale down media on hover off
+          _this2.ScaleCursor(_this2.Cursor.children[0], 0.8);
+        }); //On mouse enter scale the media-cursor to 0
 
         link.addEventListener("mouseleave", function () {
-          _this2.scaleAnimation(_this2.Cursor.children[0], 0);
+          _this2.ScaleCursor(_this2.Cursor.children[0], 0);
         }); //Hover on a tag to expand to 1.2
 
         link.children[1].addEventListener("mouseenter", function () {
           _this2.Cursor.classList.add("media-blend");
 
-          _this2.scaleAnimation(_this2.Cursor.children[0], 1.2);
-        }); //Off Hover scale to .8
+          _this2.ScaleCursor(_this2.Cursor.children[0], 1.2);
+        }); // Bring scale back down .8
 
         link.children[1].addEventListener("mouseleave", function () {
           _this2.Cursor.classList.remove("media-blend");
 
-          _this2.scaleAnimation(_this2.Cursor.children[0], 0.8);
+          _this2.ScaleCursor(_this2.Cursor.children[0], 0.8);
         });
       });
-    } //Scale Animation
-
+    }
   }, {
-    key: "scaleAnimation",
-    value: function scaleAnimation(el, amt) {
-      _gsap.gsap.to(el, {
-        duration: 0.6,
-        scale: amt,
-        ease: "Power3.easeOut"
-      });
-    } //set video
-
-  }, {
-    key: "setvideo",
-    value: function setvideo(el) {
-      // Grab the data-video-src and ensure it matches the video that would be displayed
+    key: "setVideo",
+    value: function setVideo(el) {
+      // Grab the data-video-src and make sure it matches the video that should be displayed
       var src = el.getAttribute("data-video-src");
-      var video = document.querySelector('#${src}');
+      var video = document.querySelector("#".concat(src));
       var siblings = (0, _utils.getSiblings)(video);
 
       if (video.id == src) {
@@ -5737,19 +5727,31 @@ var Cursor = /*#__PURE__*/function () {
       }
     }
   }, {
+    key: "ScaleCursor",
+    value: function ScaleCursor(el, amount) {
+      _gsap.gsap.to(el, {
+        duration: 0.6,
+        scale: amount,
+        ease: "Power3.easeOut"
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this3 = this;
 
-      this.CursorConfigs.x.current = mouse.x;
-      this.CursorConfigs.y.current = mouse.y; // lerp
+      this.cursorConfigs.x.current = mouse.x;
+      this.cursorConfigs.y.current = mouse.y; // lerp
 
       for (var key in this.cursorConfigs) {
-        this.cursorConfigs[key].previous = lerp(this.cursorConfigs[key].previous, this.cursorConfigs[key].current, this.cursorConfigs[key].amt);
+        // key will be x & y
+        // WTF IS LERP?
+        // Lerp - A lerp returns the value between two numbers at a specified, decimal midpoint:
+        this.cursorConfigs[key].previous = (0, _utils.lerp)(this.cursorConfigs[key].previous, this.cursorConfigs[key].current, this.cursorConfigs[key].amt);
       } // Setting the cursor x and y to our cursoer html element
 
 
-      this.Cursor.style.transform = "translateX(".concat(this.cursorConfigs.x.previous, "px)\n        translateY(").concat(this.cursorConfigs.y.previous, "px)"); // RAF
+      this.Cursor.style.transform = "translateX(".concat(this.cursorConfigs.x.previous, "px) translateY(").concat(this.cursorConfigs.y.previous, "px)"); // RAF
 
       requestAnimationFrame(function () {
         return _this3.render();
@@ -5811,7 +5813,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65358" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54600" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
