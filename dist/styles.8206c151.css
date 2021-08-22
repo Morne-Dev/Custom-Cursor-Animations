@@ -165,6 +165,13 @@ header .header-inner .header-inner-col .header-inner-nav .header-inner-nav-menu 
   contain: Layout style size;
   pointer-events: none;
 }
+.cursor.media-blend {
+  z-index: 100;
+  mix-blend-mode: exclusion;
+}
+.cursor.media-blend .cursor-media {
+  filter: invert(1);
+}
 .cursor:before {
   content: "";
   position: absolute;

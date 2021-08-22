@@ -5,6 +5,13 @@
   z-index: 10;
   contain: Layout style size;
   pointer-events: none;
+  &.media-blend {
+    z-index: 100;
+    mix-blend-mode: exclusion;
+    .cursor-media {
+      filter: invert(1);
+    }
+  }
   &:before {
     content: "";
     position: absolute;

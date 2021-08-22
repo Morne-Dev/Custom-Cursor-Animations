@@ -5691,10 +5691,14 @@ var Cursor = /*#__PURE__*/function () {
         }); //Hover on a tag to expand to 1.2
 
         link.children[1].addEventListener("mouseenter", function () {
+          _this2.Cursor.classList.add("media-blend");
+
           _this2.scaleAnimation(_this2.Cursor.children[0], 1.2);
         }); //Off Hover scale to .8
 
         link.children[1].addEventListener("mouseleave", function () {
+          _this2.Cursor.classList.remove("media-blend");
+
           _this2.scaleAnimation(_this2.Cursor.children[0], 0.8);
         });
       });
