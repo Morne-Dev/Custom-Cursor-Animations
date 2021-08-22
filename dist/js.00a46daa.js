@@ -5770,7 +5770,17 @@ var _gsap = require("gsap");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var body = document.querySelector("body");
+
 window.onload = function () {
+  body.classList.remove("loading");
+
+  _gsap.gsap.from(body, {
+    opacity: 0,
+    duration: 1,
+    ease: "Power3.easeInOut"
+  });
+
   var cursor = new _cursor.default(document.querySelector(".cursor"));
 };
 },{"./cursor":"js/cursor.js","gsap":"node_modules/gsap/index.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
